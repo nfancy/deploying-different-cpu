@@ -1,0 +1,7 @@
+CORES=$(grep -c '^processor' /proc/cpuinfo) #to find out out many cores are there\
+CORES=$(grep -c '^processor' /proc/cpuinfo | perl -ane 'print $F[0] - 2') #to find out out many cores are there and keeping 2 cores for other processes\
+#find -print0 / xargs -0 protects you from whitespace in filenames\
+#xargs -n 1 means one gzip process per file\
+#xargs -P specifies the number of jobs\
+#gzip -9 means maximum compression\
+find /source -type f -print0 | xargs -0 -n 1 -P $CORES gzip -9\
